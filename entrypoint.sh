@@ -8,16 +8,18 @@ else
 fi
 
 # grab tfsec from GitHub (taken from README.md)
-if [[ -n "$INPUT_TFSEC_VERSION" ]]; then
-  env GO111MODULE=on go get -u github.com/tfsec/tfsec/cmd/tfsec@"${INPUT_TFSEC_VERSION}"
-else
-  env GO111MODULE=on go get -u github.com/tfsec/tfsec/cmd/tfsec
-fi
+# if [[ -n "$INPUT_TFSEC_VERSION" ]]; then
+#   env GO111MODULE=on go get -u github.com/tfsec/tfsec/cmd/tfsec@"${INPUT_TFSEC_VERSION}"
+# else
+#   env GO111MODULE=on go get -u github.com/tfsec/tfsec/cmd/tfsec
+# fi
+wget -O - -q "https://github.com/tfsec/tfsec/releases/download/${INPUT_TFSEC_VERSION}/tfsec-linux-amd64" > tfsec \
+  && install tfsec /usr/local/bin/
 
 if [[ -n "$INPUT_TFSEC_EXCLUDE" ]]; then
-  TFSEC_OUTPUT=$(/go/bin/tfsec ${TFSEC_WORKING_DIR} --no-colour -e "${INPUT_TFSEC_EXCLUDE}")
+  TFSEC_OUTPUT=$(tfsec ${TFSEC_WORKING_DIR} --no-colour -e "${INPUT_TFSEC_EXCLUDE}")
 else
-  TFSEC_OUTPUT=$(/go/bin/tfsec ${TFSEC_WORKING_DIR} --no-colour)
+  TFSEC_OUTPUT=$(tfsec ${TFSEC_WORKING_DIR} --no-colour)
 fi
 TFSEC_EXITCODE=${?}
 
