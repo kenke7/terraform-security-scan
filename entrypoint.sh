@@ -41,7 +41,7 @@ else
 fi
 
 if [ "${GITHUB_EVENT_NAME}" == "pull_request" ] && [ -n "${GITHUB_TOKEN}" ] && [ "${TFSEC_COMMENT}" == "1" ] && [ "${TFSEC_EXITCODE}" != "0" ]; then
-    COMMENT="#### \`Terraform Security Scan\` ${TFSEC_STATUS}
+    COMMENT="#### \`${INPUT_TFSEC_ACTIONS_COMMENT_TITLE}\` ${TFSEC_STATUS}
 <details><summary>Show Output</summary>
 
 \`\`\`hcl
